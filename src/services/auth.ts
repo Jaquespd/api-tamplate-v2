@@ -21,6 +21,7 @@ export default (roles) => async (req: Request, res: Response, next) => {
   const [, token] = authHeader.split(" ");
 
   try {
+    //TODO Add condition for dev. Change verify for decode.
     const { sub: id } = verify(token, process.env.TOKEN_SECRET, {
       complete: true,
     }).payload;

@@ -1,18 +1,13 @@
 import { verify, decode } from "jsonwebtoken";
 import { unauthorized, invalid, failure } from "./response";
-import {
-  cert,
-  private_key,
-  v1a,
-  v1b,
-} from "./beiramar-firebase-adminsdk-vu3zi-83c9a42078.json";
+import fs from "fs";
 
 export const firebaseAuth = async (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   const { idToken } = req.body;
   try {
-    const buff = Buffer.from(v1b, "utf-8");
-    const accessToken: any = verify(token, buff);
+    const buffer = fs.readFileSync("./firebaseCertToken.pem");
+    const accessToken: any = verify(token, buffer);
 
     if (accessToken) {
       const idTokenDecoded: any = decode(idToken);

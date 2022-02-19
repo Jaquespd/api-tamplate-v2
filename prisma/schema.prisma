@@ -190,7 +190,7 @@ model user_services {
 model RefreshTokens {
   id          String    @id @default(uuid())
   expiresIn   Int   
-  user        users     @relation(fields: [userId], references: [id])
+  user        users     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
 
   @@map("refresh_tokens")

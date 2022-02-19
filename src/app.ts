@@ -8,6 +8,7 @@ import { success, failure } from "./services/response";
 // import root from './routes/root';
 // import chats from './routes/chats';
 import users from "./routes/users";
+import sessions from "./routes/sessions";
 // import services from './routes/services';
 // import schedules from './routes/schedules';
 // import notifications from './routes/notifications';
@@ -40,6 +41,7 @@ app.get("/", async (req, res) => {
 // app.use("/", root);
 // app.use("/chats", chats);
 app.use("/users", users);
+app.use("/sessions", sessions);
 // app.use("/services", services);
 // app.use("/schedules", schedules);
 // app.use("/notifications", notifications);
