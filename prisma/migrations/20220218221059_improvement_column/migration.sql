@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "users" ALTER COLUMN "picture" SET DATA TYPE VARCHAR(1020);
