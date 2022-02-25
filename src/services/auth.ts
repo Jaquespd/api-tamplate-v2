@@ -25,7 +25,7 @@ export default (roles) => async (req: Request, res: Response, next) => {
     const { sub: id } = verify(token, process.env.TOKEN_SECRET, {
       complete: true,
     }).payload;
-    const user = await Users.findOneUserById({ id: Number(id) });
+    const user = await Users.findOneUserById({ userId: Number(id) });
     if (!user) return notFound(res);
     res.user = user;
   } catch (err) {

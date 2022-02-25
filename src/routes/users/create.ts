@@ -7,6 +7,9 @@ export default async (req: Request, res: Response) => {
   const user = res.user;
   console.log("user", user);
   const { firstName, lastName, phone, picture } = req.body;
-  const result = await Users.showOneUserWithServices({ userId: user.id });
+  const result = await Users.showOneUserWithDetails({
+    userId: user.id,
+    roles: user.roles,
+  });
   return success(res, result);
 };

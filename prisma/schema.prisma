@@ -67,7 +67,7 @@ model photo_services {
   url        String   @db.VarChar(255)
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
-  services   services @relation(fields: [service_id], references: [id], onDelete: Cascade)
+  services   Services @relation(fields: [service_id], references: [id], onDelete: Cascade)
 }
 
 model schedules {
@@ -89,45 +89,48 @@ model schedules {
   created_at                   DateTime          @default(now()) @db.Timestamptz(6)
   updated_at                   DateTime          @default(now()) @db.Timestamptz(6)
   users                        Users             @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_services                user_services     @relation(fields: [user_service_id], references: [id], onDelete: Cascade)
+  user_services                Stores            @relation(fields: [user_service_id], references: [id], onDelete: Cascade)
   evaluations                  evaluations[]
   photo_schedules              photo_schedules[]
 }
 
-model services {
-  id                     Int              @id @default(autoincrement())
-  title                  String           @db.VarChar(255)
-  subtitle               String?          @db.VarChar(255)
-  description            String           @db.VarChar(255)
-  city                   String           @db.VarChar(255)
-  state                  String           @db.VarChar(255)
-  area_availability_hash String           @db.VarChar(255)
-  route_map              String?          @db.VarChar(255)
-  price                  String           @db.VarChar(255)
-  warning                String?          @db.VarChar(255)
-  categories_hash        String           @db.VarChar(255)
-  hashtags_hash          String?          @db.VarChar(255)
-  distance               Int
-  stops                  Int
-  duration               String           @db.VarChar(255)
-  cover_photo            String           @db.VarChar(255)
-  location_hash          String           @db.VarChar(255)
-  created_at             DateTime         @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime         @default(now()) @db.Timestamptz(6)
-  photo_services         photo_services[]
-  social_likes           social_likes[]
-  social_saves           social_saves[]
-  user_services          user_services[]
+model Services {
+  id               Int              @id @default(autoincrement())
+  title            String           @db.VarChar(255)
+  subtitle         String?          @db.VarChar(255)
+  description      String           @db.VarChar(1020)
+  city             String           @db.VarChar(255)
+  state            String           @db.VarChar(255)
+  areaAvailability String[]         @map("area_availability") @db.VarChar(255)
+  routeMap         String?          @map("route_map") @db.VarChar(255)
+  price            Int
+  warning          String?          @db.VarChar(255)
+  categories       String[]         @db.VarChar(255)
+  hashtags         String[]         @db.VarChar(255)
+  distance         Int
+  stops            Int
+  duration         Int
+  coverPhoto       String           @map("coverPhoto") @db.VarChar(255)
+  location         String[]         @db.VarChar(255)
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime         @default(now()) @map("updated_at") @db.Timestamptz(6)
+  isActive         Boolean          @default(true)
+  photos           photo_services[]
+  likes            social_likes[]
+  saves            social_saves[]
+  providers        Stores[]
+
+  @@map("services")
 }
 
 model social_followings {
-  id                                               Int      @id @default(autoincrement())
-  user_id                                          Int
-  user_following_id                                Int
-  created_at                                       DateTime @default(now()) @db.Timestamptz(6)
-  updated_at                                       DateTime @default(now()) @db.Timestamptz(6)
-  users_social_followings_user_following_idTousers Users    @relation("social_followings_user_following_idTousers", fields: [user_following_id], references: [id], onDelete: Cascade)
-  users_social_followings_user_idTousers           Users    @relation("social_followings_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
+  id                Int      @id @default(autoincrement())
+  user_id           Int
+  user_following_id Int
+  created_at        DateTime @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime @default(now()) @db.Timestamptz(6)
+  followings        Users    @relation("social_followings_user_following_idTousers", fields: [user_following_id], references: [id], onDelete: Cascade)
+  followers         Users    @relation("social_followings_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model social_likes {
@@ -136,7 +139,7 @@ model social_likes {
   service_id Int
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
-  services   services @relation(fields: [service_id], references: [id], onDelete: Cascade)
+  services   Services @relation(fields: [service_id], references: [id], onDelete: Cascade)
   users      Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
@@ -146,54 +149,58 @@ model social_saves {
   service_id Int
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
-  services   services @relation(fields: [service_id], references: [id], onDelete: Cascade)
+  services   Services @relation(fields: [service_id], references: [id], onDelete: Cascade)
   users      Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Users {
-  id                                                           Int                 @id @default(autoincrement())
-  picture                                                      String?             @db.VarChar(1020)
-  firstName                                                   String              @db.VarChar(255) @map("first_name")
-  lastName                                                    String?             @db.VarChar(255) @map("last_name")
-  email                                                        String              @unique @db.VarChar(255)
-  bio                                                          String?             @db.VarChar(255)
-  checkGoogle                                                 Boolean             @default(false) @map("check_google")
-  checkFacebook                                               Boolean             @default(false) @map("check_facebook")
-  phone                                                        String?             @db.VarChar(255)
-  roles                                                       String[]              @db.VarChar(255)
-  authId                                                      String              @db.VarChar(255) @map("auth_id")
-  createdAt                                                   DateTime            @default(now()) @db.Timestamptz(6) @map("created_at")
-  updatedAt                                                   DateTime            @default(now()) @db.Timestamptz(6) @map("updated_at")
-  chats_chats_recipient_user_idTousers                         chats[]             @relation("chats_recipient_user_idTousers")
-  chats_chats_user_idTousers                                   chats[]             @relation("chats_user_idTousers")
-  messages                                                     messages[]
-  schedules                                                    schedules[]
-  social_followings_social_followings_user_following_idTousers social_followings[] @relation("social_followings_user_following_idTousers")
-  social_followings_social_followings_user_idTousers           social_followings[] @relation("social_followings_user_idTousers")
-  likes                                                        social_likes[]
-  saves                                                        social_saves[]
-  services                                                     user_services[]     
-  refreshToken                                                 RefreshTokens?
+  id                                   Int                 @id @default(autoincrement())
+  picture                              String?             @db.VarChar(1020)
+  firstName                            String              @map("first_name") @db.VarChar(255)
+  lastName                             String?             @map("last_name") @db.VarChar(255)
+  email                                String              @unique @db.VarChar(255)
+  bio                                  String?             @db.VarChar(255)
+  checkGoogle                          Boolean             @default(false) @map("check_google")
+  checkFacebook                        Boolean             @default(false) @map("check_facebook")
+  phone                                String?             @db.VarChar(255)
+  roles                                String[]            @db.VarChar(255)
+  authId                               String              @map("auth_id") @db.VarChar(255)
+  createdAt                            DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                            DateTime            @default(now()) @map("updated_at") @db.Timestamptz(6)
+  isActive                             Boolean             @default(true)
+  chats_chats_recipient_user_idTousers chats[]             @relation("chats_recipient_user_idTousers")
+  chats_chats_user_idTousers           chats[]             @relation("chats_user_idTousers")
+  messages                             messages[]
+  schedules                            schedules[]
+  followings                           social_followings[] @relation("social_followings_user_following_idTousers")
+  followers                            social_followings[] @relation("social_followings_user_idTousers")
+  likes                                social_likes[]
+  saves                                social_saves[]
+  services                             Stores[]
+  refreshToken                         RefreshTokens?
 
   @@map("users")
 }
 
-model user_services {
-  id          Int         @id @default(autoincrement())
-  provider_id Int
-  service_id  Int
-  created_at  DateTime    @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime    @default(now()) @db.Timestamptz(6)
-  users       Users       @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  services    services    @relation(fields: [service_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  schedules   schedules[]
+model Stores {
+  id         Int         @id @default(autoincrement())
+  providerId Int         @map("provider_id")
+  serviceId  Int         @map("service_id")
+  createdAt  DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime    @default(now()) @map("updated_at") @db.Timestamptz(6)
+  users      Users       @relation(fields: [providerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  services   Services    @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  schedules  schedules[]
+
+  // @@id([providerId, serviceId])
+  @@map("stores")
 }
 
 model RefreshTokens {
-  id          String    @id @default(uuid())
-  expiresIn   Int   
-  user        Users     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
+  id        String @id @default(uuid())
+  expiresIn Int
+  user      Users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int    @unique
 
   @@map("refresh_tokens")
 }

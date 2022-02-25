@@ -78,8 +78,113 @@ export class Users {
     return user || false;
   }
 
-  static async findOneUserById({ id }: { id: number }) {
-    const user = await prisma.users.findFirst({ where: { id } });
+  static async findOneUserById({ userId }: { userId: number }) {
+    const user = await prisma.users.findFirst({ where: { id: userId } });
     return user || false;
+  }
+
+  static async showOneUserWithDetails({
+    userId,
+    roles,
+  }: {
+    userId: number;
+    roles: Array<string>;
+  }) {
+    const user = await prisma.users.findFirst({
+      where: {
+        id: userId,
+      },
+      include: {
+        saves: true,
+        services: { include: { services: true } },
+        likes: true,
+        followings: true,
+        followers: true,
+      },
+    });
+    console.log("user", user);
+    // const oneUser = user
+    //   ? user
+    //   : null;
+
+    // const followings = await Followings.findAll({
+    //   where: { userFollowingId: userId },
+    // });
+    // const followers = followings.map(({ dataValues }) => {
+    //   const userFollowerId = dataValues.userFollowingId;
+    //   delete dataValues.userFollowingId;
+    //   return { ...dataValues, userFollowerId };
+    // });
+
+    // let resultEvaluations = {};
+    //user
+    // if (userType === "user") {
+    //   const schedules = await Schedules.findAll({
+    //     where: { userId },
+    //     include: [{ association: "evaluation" }],
+    //   });
+    //   const evaluations = [];
+    //   for (const schedule of schedules) {
+    //     if (schedule.evaluation) evaluations.push(schedule.evaluation);
+    //   }
+
+    //   const numberOfComments = evaluations.length;
+    //   const averageRating =
+    //     evaluations.reduce(
+    //       (acc, evaluation) =>
+    //         acc + Number(evaluation.dataValues.evaluationProvider),
+    //       0
+    //     ) / evaluations.length;
+    //   const comments = evaluations.map((evaluation) => evaluation.dataValues);
+    //   resultEvaluations = {
+    //     numberOfComments,
+    //     numberOfSchedules: schedules.length,
+    //     averageRating,
+    //     schedules,
+    //     comments,
+    //   };
+    // }
+
+    //provider
+    // if (userType === "provider") {
+    //   const userServices = await UserServices.findAll({
+    //     where: { providerId: userId },
+    //     include: [
+    //       {
+    //         association: "schedules",
+    //         include: [{ association: "evaluation" }, { association: "user" }],
+    //       },
+    //     ],
+    //   });
+    //   let schedules = [];
+    //   for (const userService of userServices) {
+    //     if (userService.schedules.length > 0) {
+    //       schedules = [...schedules, ...userService.schedules];
+    //     }
+    //   }
+    //   const evaluations = [];
+    //   for (const schedule of schedules) {
+    //     if (schedule.evaluation) evaluations.push(schedule);
+    //   }
+
+    //   const numberOfComments = evaluations.length;
+    //   const averageRating =
+    //     evaluations.reduce(
+    //       (acc, evaluation) =>
+    //         acc + Number(evaluation.dataValues.evaluationUser),
+    //       0
+    //     ) / evaluations.length;
+    //   const comments = evaluations.map((evaluation) => evaluation.dataValues);
+    //   resultEvaluations = {
+    //     numberOfComments,
+    //     numberOfSchedules: schedules.length,
+    //     averageRating,
+    //     schedules,
+    //     comments,
+    //   };
+    // }
+
+    // return { ...oneUser, ...resultEvaluations, followers };
+    return;
   }
 }
