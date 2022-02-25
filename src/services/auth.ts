@@ -27,7 +27,6 @@ export default (roles) => async (req: Request, res: Response, next) => {
     }).payload;
     const user = await Users.findOneUserById({ id: Number(id) });
     if (!user) return notFound(res);
-    console.log("user", user);
     res.user = user;
   } catch (err) {
     console.log("***Error:", err.message);

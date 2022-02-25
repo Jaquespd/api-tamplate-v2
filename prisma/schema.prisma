@@ -17,8 +17,8 @@ model chats {
   last_message_seen                    DateTime   @default(now()) @db.Timestamptz(6)
   created_at                           DateTime   @default(now()) @db.Timestamptz(6)
   updated_at                           DateTime   @default(now()) @db.Timestamptz(6)
-  users_chats_recipient_user_idTousers users      @relation("chats_recipient_user_idTousers", fields: [recipient_user_id], references: [id], onDelete: Cascade)
-  users_chats_user_idTousers           users      @relation("chats_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
+  users_chats_recipient_user_idTousers Users      @relation("chats_recipient_user_idTousers", fields: [recipient_user_id], references: [id], onDelete: Cascade)
+  users_chats_user_idTousers           Users      @relation("chats_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
   messages                             messages[]
 }
 
@@ -45,7 +45,7 @@ model messages {
   created_at      DateTime @default(now()) @db.Timestamptz(6)
   updated_at      DateTime @default(now()) @db.Timestamptz(6)
   chats           chats    @relation(fields: [chat_id], references: [id], onDelete: Cascade)
-  users           users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  users           Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model photo_schedules {
@@ -88,7 +88,7 @@ model schedules {
   status                       String            @default("pendingConfirmation") @db.VarChar(255)
   created_at                   DateTime          @default(now()) @db.Timestamptz(6)
   updated_at                   DateTime          @default(now()) @db.Timestamptz(6)
-  users                        users             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  users                        Users             @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_services                user_services     @relation(fields: [user_service_id], references: [id], onDelete: Cascade)
   evaluations                  evaluations[]
   photo_schedules              photo_schedules[]
@@ -126,8 +126,8 @@ model social_followings {
   user_following_id                                Int
   created_at                                       DateTime @default(now()) @db.Timestamptz(6)
   updated_at                                       DateTime @default(now()) @db.Timestamptz(6)
-  users_social_followings_user_following_idTousers users    @relation("social_followings_user_following_idTousers", fields: [user_following_id], references: [id], onDelete: Cascade)
-  users_social_followings_user_idTousers           users    @relation("social_followings_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
+  users_social_followings_user_following_idTousers Users    @relation("social_followings_user_following_idTousers", fields: [user_following_id], references: [id], onDelete: Cascade)
+  users_social_followings_user_idTousers           Users    @relation("social_followings_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model social_likes {
@@ -137,7 +137,7 @@ model social_likes {
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
   services   services @relation(fields: [service_id], references: [id], onDelete: Cascade)
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  users      Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model social_saves {
@@ -147,33 +147,35 @@ model social_saves {
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
   services   services @relation(fields: [service_id], references: [id], onDelete: Cascade)
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  users      Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
-model users {
+model Users {
   id                                                           Int                 @id @default(autoincrement())
   picture                                                      String?             @db.VarChar(1020)
-  first_name                                                   String              @db.VarChar(255)
-  last_name                                                    String?             @db.VarChar(255)
+  firstName                                                   String              @db.VarChar(255) @map("first_name")
+  lastName                                                    String?             @db.VarChar(255) @map("last_name")
   email                                                        String              @unique @db.VarChar(255)
   bio                                                          String?             @db.VarChar(255)
-  check_google                                                 Boolean             @default(false)
-  check_facebook                                               Boolean             @default(false)
+  checkGoogle                                                 Boolean             @default(false) @map("check_google")
+  checkFacebook                                               Boolean             @default(false) @map("check_facebook")
   phone                                                        String?             @db.VarChar(255)
-  role_hash                                                    String              @default("[\"user\"]") @db.VarChar(255)
-  auth_id                                                      String              @db.VarChar(255)
-  created_at                                                   DateTime            @default(now()) @db.Timestamptz(6)
-  updated_at                                                   DateTime            @default(now()) @db.Timestamptz(6)
+  roles                                                       String[]              @db.VarChar(255)
+  authId                                                      String              @db.VarChar(255) @map("auth_id")
+  createdAt                                                   DateTime            @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt                                                   DateTime            @default(now()) @db.Timestamptz(6) @map("updated_at")
   chats_chats_recipient_user_idTousers                         chats[]             @relation("chats_recipient_user_idTousers")
   chats_chats_user_idTousers                                   chats[]             @relation("chats_user_idTousers")
   messages                                                     messages[]
   schedules                                                    schedules[]
   social_followings_social_followings_user_following_idTousers social_followings[] @relation("social_followings_user_following_idTousers")
   social_followings_social_followings_user_idTousers           social_followings[] @relation("social_followings_user_idTousers")
-  social_likes                                                 social_likes[]
-  social_saves                                                 social_saves[]
-  user_services                                                user_services[]
-  refresh_token                                                RefreshTokens?
+  likes                                                        social_likes[]
+  saves                                                        social_saves[]
+  services                                                     user_services[]     
+  refreshToken                                                 RefreshTokens?
+
+  @@map("users")
 }
 
 model user_services {
@@ -182,15 +184,15 @@ model user_services {
   service_id  Int
   created_at  DateTime    @default(now()) @db.Timestamptz(6)
   updated_at  DateTime    @default(now()) @db.Timestamptz(6)
-  users       users       @relation(fields: [provider_id], references: [id], onDelete: Cascade)
-  services    services    @relation(fields: [service_id], references: [id], onDelete: Cascade)
+  users       Users       @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  services    services    @relation(fields: [service_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   schedules   schedules[]
 }
 
 model RefreshTokens {
   id          String    @id @default(uuid())
   expiresIn   Int   
-  user        users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        Users     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
 
   @@map("refresh_tokens")
