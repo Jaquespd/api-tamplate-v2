@@ -227,7 +227,7 @@ async function main() {
       });
     }
   }
-  // ADD SERVICES IN PROVIDERS
+  // ADD SERVICES IN PROVIDERS (STORES)
   let providerId = 10; //First provider id = 11
   const getRandomIntInclusive = (min, max) => {
     min = Math.ceil(min);
@@ -239,7 +239,7 @@ async function main() {
     let serviceId = 0;
     for (const elem of Array.from(Array(6), (e) => "1")) {
       serviceId++;
-      if (getRandomIntInclusive(1, 100) > 33) continue;
+      if (getRandomIntInclusive(1, 100) > 50) continue;
       await prisma.stores.upsert({
         where: { id: 10000 },
         update: {},
@@ -250,6 +250,151 @@ async function main() {
       });
     }
   }
+  // ADD FOLLOWINGS IN USERS/PROVIDES/ADMINS
+  let userId = 0; //First provider id = 11
+  for (const element of Array.from(Array(500), (e) => "1")) {
+    userId++;
+    let userFollowingId = 0;
+    for (const elem of Array.from(Array(50), (e) => "1")) {
+      userFollowingId++;
+      if (getRandomIntInclusive(1, 100) > 33) continue;
+      await prisma.followings.upsert({
+        where: { id: 1000000 },
+        update: {},
+        create: {
+          userId,
+          userFollowingId,
+        },
+      });
+    }
+  }
+  // ADD LIKES IN SERVICES
+  userId = 0; //First provider id = 11
+  for (const element of Array.from(Array(500), (e) => "1")) {
+    userId++;
+    let serviceId = 0;
+    for (const elem of Array.from(Array(6), (e) => "1")) {
+      serviceId++;
+      if (getRandomIntInclusive(1, 100) > 33) continue;
+      await prisma.likes.upsert({
+        where: { id: 1000000 },
+        update: {},
+        create: {
+          userId,
+          serviceId,
+        },
+      });
+    }
+  }
+  // ADD SAVES IN SERVICES
+  userId = 0; //First provider id = 11
+  for (const element of Array.from(Array(500), (e) => "1")) {
+    userId++;
+    let serviceId = 0;
+    for (const elem of Array.from(Array(6), (e) => "1")) {
+      serviceId++;
+      if (getRandomIntInclusive(1, 100) > 33) continue;
+      await prisma.saves.upsert({
+        where: { id: 1000000 },
+        update: {},
+        create: {
+          userId,
+          serviceId,
+        },
+      });
+    }
+  }
+  // ADD SCHEDULES
+  userId = 20; //First provider id = 11
+  for (const element of Array.from(Array(480), (e) => "1")) {
+    userId++;
+    let userServiceId = 0;
+    for (const elem of Array.from(Array(15), (e) => "1")) {
+      userServiceId++;
+      if (getRandomIntInclusive(1, 100) > 33) continue;
+      await prisma.schedules.upsert({
+        where: { id: 1000000 },
+        update: {},
+        create: {
+          userId,
+          userServiceId,
+          userServiceDate: faker.date.soon(),
+        },
+      });
+    }
+  }
+  // ADD PHOTO SERVICES
+  let serviceId = 0; //First provider id = 11
+  for (const element of Array.from(Array(6), (e) => "1")) {
+    serviceId++;
+    for (const elem of Array.from(Array(30), (e) => "1")) {
+      if (getRandomIntInclusive(1, 100) > 40) continue;
+      await prisma.photoServices.upsert({
+        where: { id: 1000000 },
+        update: {},
+        create: {
+          key: faker.datatype.uuid(),
+          type: "image/jpg",
+          url: faker.image.nature(),
+          serviceId,
+        },
+      });
+    }
+  }
+  // ADD EVALUATIONS
+  let scheduleId = 0; //First provider id = 11
+  for (const element of Array.from(Array(1500), (e) => "1")) {
+    scheduleId++;
+    await prisma.evaluations.upsert({
+      where: { id: 1000000 },
+      update: {},
+      create: {
+        scheduleId,
+        commentProvider: faker.commerce.productDescription(),
+        commentService: faker.commerce.productDescription(),
+        commentUser: faker.commerce.productDescription(),
+        evaluationProvider: faker.datatype
+          .number({
+            min: 1,
+            max: 5,
+            precision: 0.5,
+          })
+          .toString(),
+        evaluationService: faker.datatype
+          .number({
+            min: 1,
+            max: 5,
+            precision: 0.5,
+          })
+          .toString(),
+        evaluationUser: faker.datatype
+          .number({
+            min: 1,
+            max: 5,
+            precision: 0.5,
+          })
+          .toString(),
+      },
+    });
+  }
+  // ADD PHOTO SCHEDULES
+  // let scheduleId = 0; //First provider id = 11
+  // for (const element of Array.from(Array(1000), (e) => "1")) {
+  //   scheduleId++;
+  //   for (const elem of Array.from(Array(30), (e) => "1")) {
+  //     if (getRandomIntInclusive(1, 100) > 40) continue;
+  //     await prisma.photoSchedules.upsert({
+  //       where: { id: 1000000 },
+  //       update: {},
+  //       create: {
+  //         key: faker.datatype.uuid(),
+  //         type: "image/jpg",
+  //         url: faker.image.nature(),
+  //         scheduleId,
+  //       },
+  //     });
+  //   }
+  // }
 }
 
 main()

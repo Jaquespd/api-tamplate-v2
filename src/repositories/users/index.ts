@@ -68,9 +68,14 @@ export class Users {
   static async showOneUserWithServices({ userId }) {
     const user = await prisma.users.findFirst({
       where: { id: userId },
-      include: { services: true },
+      include: { stores: { include: { services: true } } },
     });
-    return user || false;
+    const oneUser = {
+      ...user,
+      services: user.stores.map((store) => store.services),
+    };
+    delete oneUser.stores;
+    return oneUser || false;
   }
 
   static async findOneUserByEmail({ email }: { email: string }) {
@@ -96,16 +101,18 @@ export class Users {
       },
       include: {
         saves: true,
-        services: { include: { services: true } },
+        stores: { include: { services: true } },
         likes: true,
         followings: true,
         followers: true,
       },
     });
-    console.log("user", user);
-    // const oneUser = user
-    //   ? user
-    //   : null;
+    const oneUser = {
+      ...user,
+      services: user.stores.map((store) => store.services),
+    };
+    delete oneUser.stores;
+    console.log("user", oneUser);
 
     // const followings = await Followings.findAll({
     //   where: { userFollowingId: userId },
