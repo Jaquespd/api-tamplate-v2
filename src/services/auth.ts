@@ -12,8 +12,26 @@ declare module "express-serve-static-core" {
 export default (roles) => async (req: Request, res: Response, next) => {
   let authHeader = req.headers.authorization;
   //FOR DEV
-  if (process.env.NODE_ENV === "development" && authHeader === "Bearer dev")
-    authHeader = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDUyMjUzMjMsImV4cCI6MTY0NTMxMTcyMywic3ViIjoiOSJ9.dzc6Fv2VnF8_CJxkn2_CnKyVgFTy8z7ywewDITi_nJQ`;
+  if (
+    process.env.NODE_ENV === "development" &&
+    authHeader?.includes("Bearer dev")
+  ) {
+    // authHeader = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDUyMjUzMjMsImV4cCI6MTY0NTMxMTcyMywic3ViIjoiOSJ9.dzc6Fv2VnF8_CJxkn2_CnKyVgFTy8z7ywewDITi_nJQ`;
+    const userType = authHeader.split(" ")[2];
+    let id = authHeader.split(" ")[3] || 0;
+    if (!id && userType === "admin") id = 1;
+    if (!id && userType === "provider") id = 12;
+    if (!id && userType === "user") id = 22;
+    const user = await Users.findOneUserById({ userId: Number(id) });
+    if (!user) return notFound(res);
+    res.user = user;
+
+    if (!roles || roles === "all") return next();
+    for (const role of res.user.roles) {
+      if (Array.isArray(roles) && roles.some((r) => r === role)) return next();
+    }
+    return unallowed(res);
+  }
   if (!authHeader) {
     return unauthorized(res);
   }

@@ -2,7 +2,7 @@ import express from "express";
 import http from "http";
 import path from "path";
 import cors from "cors";
-// import swaggerUi from 'swagger-ui-express';
+import swaggerUi from "swagger-ui-express";
 // import { Server } from 'socket.io';
 import { success, failure } from "./services/response";
 // import root from './routes/root';
@@ -13,7 +13,7 @@ import sessions from "./routes/sessions";
 // import schedules from './routes/schedules';
 // import notifications from './routes/notifications';
 // import photoService from './routes/photoService';
-// import swaggerDocs from './swagger.json';
+import swaggerDocs from "./swagger.json";
 // import socketHandler from './sockets';
 
 const app = express();
@@ -36,7 +36,11 @@ app.use(express.json());
 // app.set("views", path.join(__dirname, "./views"));
 
 app.get("/", async (req, res) => {
-  return res.json({ message: "🚀🚀🚀🚀", status: "OK" });
+  return res.json({
+    message: "🚀🚀🚀🚀",
+    status: "OK",
+    swagger: "http://localhost:5000/api-docs/",
+  });
 });
 // app.use("/", root);
 // app.use("/chats", chats);
@@ -46,7 +50,7 @@ app.use("/sessions", sessions);
 // app.use("/schedules", schedules);
 // app.use("/notifications", notifications);
 // app.use("/photo-service", photoService);
-// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // app.use("/docs", express.static("docs"));
 
 /* catch all other routes */

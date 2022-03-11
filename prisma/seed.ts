@@ -308,16 +308,16 @@ async function main() {
   userId = 20; //First provider id = 11
   for (const element of Array.from(Array(480), (e) => "1")) {
     userId++;
-    let userServiceId = 0;
+    let storeId = 0;
     for (const elem of Array.from(Array(15), (e) => "1")) {
-      userServiceId++;
+      storeId++;
       if (getRandomIntInclusive(1, 100) > 33) continue;
       await prisma.schedules.upsert({
         where: { id: 1000000 },
         update: {},
         create: {
           userId,
-          userServiceId,
+          storeId,
           userServiceDate: faker.date.soon(),
         },
       });

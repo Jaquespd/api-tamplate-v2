@@ -26,7 +26,7 @@ model Chats {
 
 model Evaluations {
   id                 Int       @id @default(autoincrement())
-  scheduleId         Int       @map("schedule_id")
+  scheduleId         Int       @unique @map("schedule_id")
   commentService     String?   @map("comment_service") @db.VarChar(255)
   evaluationService  String?   @map("evaluation_service") @db.VarChar(255)
   commentProvider    String?   @map("comment_provider") @db.VarChar(255)
@@ -83,7 +83,7 @@ model PhotoServices {
 model Schedules {
   id                         Int              @id @default(autoincrement())
   userId                     Int              @map("user_id")
-  userServiceId              Int              @map("user_service_id")
+  storeId                    Int              @map("store_id")
   userServiceDate            DateTime         @map("user_service_date") @db.Timestamptz(6)
   userStartedDate            DateTime?        @map("user_started_date") @db.Timestamptz(6)
   userEndedDate              DateTime?        @map("user_ended_date") @db.Timestamptz(6)
@@ -99,8 +99,8 @@ model Schedules {
   createdAt                  DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt                  DateTime         @default(now()) @map("updated_at") @db.Timestamptz(6)
   users                      Users            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  store                      Stores           @relation(fields: [userServiceId], references: [id], onDelete: Cascade)
-  evaluation                 Evaluations[]
+  store                      Stores           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  evaluation                 Evaluations?
   photos                     PhotoSchedules[]
 
   @@map("schedules")
@@ -207,7 +207,7 @@ model Stores {
   createdAt  DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt  DateTime    @default(now()) @map("updated_at") @db.Timestamptz(6)
   users      Users       @relation(fields: [providerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  services   Services    @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  service    Services    @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   schedules  Schedules[]
 
   // @@id([providerId, serviceId])
