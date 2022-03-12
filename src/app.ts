@@ -9,7 +9,7 @@ import { success, failure } from "./services/response";
 // import chats from './routes/chats';
 import users from "./routes/users";
 import sessions from "./routes/sessions";
-// import services from './routes/services';
+import services from "./routes/services";
 // import schedules from './routes/schedules';
 // import notifications from './routes/notifications';
 // import photoService from './routes/photoService';
@@ -46,7 +46,7 @@ app.get("/", async (req, res) => {
 // app.use("/chats", chats);
 app.use("/users", users);
 app.use("/sessions", sessions);
-// app.use("/services", services);
+app.use("/services", services);
 // app.use("/schedules", schedules);
 // app.use("/notifications", notifications);
 // app.use("/photo-service", photoService);

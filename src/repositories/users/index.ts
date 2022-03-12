@@ -1,7 +1,7 @@
 import { prisma } from "../database";
 import { Users as IUsersPrisma } from "@prisma/client";
 
-interface ICreateUser {
+export interface ICreateUser {
   authId: string;
   firstName: string;
   lastName: string;

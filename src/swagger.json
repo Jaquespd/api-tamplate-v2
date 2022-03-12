@@ -1,22 +1,22 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API da aplicação my-trip",
+    "title": "API da aplicação beiramar",
     "description": "Essa api tem como objetivo fornecer dados para o app",
     "termsOfService": "http://localhost:5000/terms",
     "contact": {
-      "email": "suporte@mytrip.com"
+      "email": "suporte@beiramar.com"
     },
-    "version": "1.0.0"
+    "version": "0.0.1"
   },
   "servers": [
     {
-      "url": "https://api.mytrip.natalprojetos.com.br",
-      "description": "API de produção"
-    },
-    {
       "url": "http://localhost:5000",
       "description": "API de test"
+    },
+    {
+      "url": "https://api.beiramar.natalprojetos.com.br",
+      "description": "API de produção"
     }
   ],
   "paths": {
