@@ -41,6 +41,7 @@ export class Services {
       });
       return service;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -111,6 +112,7 @@ export class Services {
 
       return servicesParsed;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -129,6 +131,7 @@ export class Services {
 
       return listAllCategoriesUnique ? listAllCategoriesUnique : [];
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -151,6 +154,7 @@ export class Services {
       const servicesParsed = !!service ? Services.parseService(service) : {};
       return servicesParsed;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -162,6 +166,7 @@ export class Services {
       });
       return !!service;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }

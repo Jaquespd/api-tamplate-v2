@@ -1,10 +1,10 @@
 import Joi from "joi";
 import { Request, Response } from "express";
 import { success, invalid, failure, notFound } from "../../services/response";
-import { Services } from "../../repositories/services";
+import { Schedules } from "../../repositories/schedules";
 
 export default async (req: Request, res: Response) => {
-  const { id: serviceId } = req.params;
+  const { serviceId } = req.params;
 
   const schema = Joi.object({
     serviceId: Joi.string().min(1).required(),
@@ -19,11 +19,10 @@ export default async (req: Request, res: Response) => {
   }
 
   try {
-    const isRemoved = await Services.removeOneService({
+    const schedules = await Schedules.listAllSchedulesOneService({
       serviceId: Number(serviceId),
     });
-    if (!isRemoved) return notFound(res);
-    return success(res, isRemoved);
+    return success(res, schedules);
   } catch (err) {
     console.log("***Error:", err.message);
     return failure(res);

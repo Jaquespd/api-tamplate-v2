@@ -40,6 +40,7 @@ export class Users {
       });
       return user;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -59,6 +60,7 @@ export class Users {
       });
       return user || false;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -68,6 +70,7 @@ export class Users {
       const users = await prisma.users.findMany();
       return users || [];
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -77,6 +80,7 @@ export class Users {
       const user = await prisma.users.findFirst({ where: { id: userId } });
       return user || false;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -94,6 +98,7 @@ export class Users {
       delete oneUser.stores;
       return oneUser || false;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -103,6 +108,7 @@ export class Users {
       const user = await prisma.users.findFirst({ where: { email } });
       return user || false;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -112,6 +118,7 @@ export class Users {
       const user = await prisma.users.findFirst({ where: { id: userId } });
       return user || false;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -202,6 +209,7 @@ export class Users {
 
       return {};
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -215,6 +223,7 @@ export class Users {
       });
       return !!user;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -239,6 +248,7 @@ export class Users {
       });
       return !!store;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -256,6 +266,7 @@ export class Users {
       });
       return !!store;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -280,6 +291,7 @@ export class Users {
       });
       return !!following;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -297,6 +309,7 @@ export class Users {
       });
       return !!following;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -321,6 +334,7 @@ export class Users {
       });
       return !!save;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -339,6 +353,7 @@ export class Users {
 
       return !!saves;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -363,6 +378,7 @@ export class Users {
       });
       return !!like;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }
@@ -380,6 +396,7 @@ export class Users {
       });
       return !!like;
     } catch (err) {
+      if (err) console.log("ERROR: ", err.message);
       return false;
     }
   }

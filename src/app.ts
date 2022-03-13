@@ -10,7 +10,7 @@ import { success, failure } from "./services/response";
 import users from "./routes/users";
 import sessions from "./routes/sessions";
 import services from "./routes/services";
-// import schedules from './routes/schedules';
+import schedules from "./routes/schedules";
 // import notifications from './routes/notifications';
 // import photoService from './routes/photoService';
 import swaggerDocs from "./swagger.json";
@@ -47,7 +47,7 @@ app.get("/", async (req, res) => {
 app.use("/users", users);
 app.use("/sessions", sessions);
 app.use("/services", services);
-// app.use("/schedules", schedules);
+app.use("/schedules", schedules);
 // app.use("/notifications", notifications);
 // app.use("/photo-service", photoService);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
