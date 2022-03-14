@@ -1,9 +1,16 @@
 import Joi from "joi";
+import { Request, Response } from "express";
 import { success, invalid, failure, notFound } from "../../services/response";
-import { Users } from "../../repositories/users";
+import { Users, ICreateUser } from "../../repositories/users";
 import { Sessions } from "../../repositories/sessions";
 
-export default async (req, res) => {
+declare module "express-serve-static-core" {
+  interface Request {
+    user?: ICreateUser;
+  }
+}
+
+export default async (req: Request, res: Response) => {
   const {
     authId,
     firstName,

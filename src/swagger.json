@@ -1,0 +1,611 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API da aplicação beiramar",
+    "description": "Essa api tem como objetivo fornecer dados para o app",
+    "termsOfService": "http://localhost:5000/terms",
+    "contact": {
+      "email": "suporte@beiramar.com"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "API de test"
+    },
+    {
+      "url": "https://api.beiramar.natalprojetos.com.br",
+      "description": "API de produção"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Listar todos os usuarios",
+        "description": "Essa rota é responsavel por listar todos os usuarios",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Edita o nome, email e telefone de um usuário.",
+        "description": "Edita o nome email e telefone de um usuário.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "picture": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Listar detalhes de um usuario",
+        "description": "Essa rota é responsavel por listar os detalhes de um usuario especifico.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuario",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Deleta um usuario",
+        "description": "Deleta um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuario",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/add-service": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Adiciona um serviço a um usuario",
+        "description": "Adiciona um serviço a um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "serviceId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/remove-service": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Remove um serviço a um usuario",
+        "description": "Remove um serviço a um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "serviceId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/add-following": {
+      "post": {
+        "tags": ["Social"],
+        "summary": "Passa a seguir um usuario",
+        "description": "Passa a seguir um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userFollowingId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/remove-following/{id}": {
+      "delete": {
+        "tags": ["Social"],
+        "summary": "Deixa de seguir um usuario",
+        "description": "Deixa de seguir um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do social following",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/add-save": {
+      "post": {
+        "tags": ["Social"],
+        "summary": "Adiciona um serviço aos preferidos de um usuario",
+        "description": "Adiciona um serviço aos preferidos de um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "serviceId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/remove-save/{id}": {
+      "delete": {
+        "tags": ["Social"],
+        "summary": "Remove um serviço dos preferidos de um usuario",
+        "description": "Remove um serviço dos preferidos de um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do social save",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users/add-like": {
+      "post": {
+        "tags": ["Social"],
+        "summary": "Adiciona um serviço aos likes de um usuario",
+        "description": "Adiciona um serviço aos likes de um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "serviceId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/remove-like/{id}": {
+      "delete": {
+        "tags": ["Social"],
+        "summary": "Remove um serviço dos likes de um usuario",
+        "description": "Remove um serviço dos likes de um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do social like",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/services": {
+      "get": {
+        "summary": "Listar todos os serviços",
+        "description": "Essa rota é responsavel por listar todos os serviços",
+        "tags": ["Services"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      },
+      "post": {
+        "tags": ["Services"],
+        "summary": "Adicionar um novo serviço",
+        "description": "Adiciona um novo serviço",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateService"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/services/categories": {
+      "get": {
+        "summary": "Listar todas as categorias de um serviço",
+        "description": "Essa rota é responsavel por listar todas as categorias de um serviço.",
+        "tags": ["Services"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/services/{id}": {
+      "get": {
+        "summary": "Listar detalhes de um serviço",
+        "description": "Essa rota é responsavel por listar os detalhes de um serviço especifico.",
+        "tags": ["Services"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuario",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "tags": ["Services"],
+        "summary": "Deleta um serviço",
+        "description": "Deleta um usuario",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuario",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/schedules": {
+      "get": {
+        "summary": "Listar todos os agendamentos",
+        "description": "Essa rota é responsavel por listar todos os agendamentos",
+        "tags": ["Schedules"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      },
+      "post": {
+        "tags": ["Schedules"],
+        "summary": "Adicionar um novo agendamento",
+        "description": "Adiciona um novo agendamento",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSchedule"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/schedules/service/{id}": {
+      "get": {
+        "summary": "Listar todos os agendamentos de um serviço",
+        "description": "Essa rota é responsavel por listar todos os agendamento de um serviço especifico.",
+        "tags": ["Schedules"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do serviço",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/schedules/provider/{id}": {
+      "get": {
+        "summary": "Listar todos os agendamentos de um provider",
+        "description": "Essa rota é responsavel por listar todos os agendamento de um provider especifico.",
+        "tags": ["Schedules"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do provider",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {}
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateService": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "areaAvailability": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "routeMap": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "warning": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hashtags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "distance": {
+            "type": "integer"
+          },
+          "stops": {
+            "type": "integer"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "coverPhoto": {
+            "type": "string"
+          },
+          "location": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateSchedule": {
+        "type": "object",
+        "properties": {
+          "providerId": {
+            "type": "integer"
+          },
+          "serviceId": {
+            "type": "integer"
+          },
+          "userServiceDate": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

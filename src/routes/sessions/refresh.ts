@@ -1,8 +1,9 @@
 import Joi from "joi";
+import { Request, Response } from "express";
 import { success, invalid, failure, notFound } from "../../services/response";
 import { Sessions } from "../../repositories/sessions";
 
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
   const schema = Joi.object({
     refreshToken: Joi.string().min(3).max(36).required(),

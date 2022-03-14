@@ -7,191 +7,218 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model chats {
-  id                                   Int        @id @default(autoincrement())
-  user_id                              Int
-  recipient_user_id                    Int
-  is_notification_active               Boolean    @default(true)
-  is_visible                           Boolean    @default(true)
-  is_block                             Boolean    @default(false)
-  last_message_seen                    DateTime   @default(now()) @db.Timestamptz(6)
-  created_at                           DateTime   @default(now()) @db.Timestamptz(6)
-  updated_at                           DateTime   @default(now()) @db.Timestamptz(6)
-  users_chats_recipient_user_idTousers users      @relation("chats_recipient_user_idTousers", fields: [recipient_user_id], references: [id], onDelete: Cascade)
-  users_chats_user_idTousers           users      @relation("chats_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
-  messages                             messages[]
+model Chats {
+  id                     Int        @id @default(autoincrement())
+  userid                 Int        @map("user_id")
+  recipientUserId        Int        @map("recipient_user_id")
+  isNotificationActive   Boolean    @default(true) @map("is_notification_active")
+  isVisible              Boolean    @default(true) @map("is_visible")
+  isBlock                Boolean    @default(false) @map("is_block")
+  lastMessageSeen        DateTime   @default(now()) @map("last_message_seen") @db.Timestamptz(6)
+  createdAt              DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime   @default(now()) @map("updated_at") @db.Timestamptz(6)
+  recipientUserIdToUsers Users      @relation("chats_recipient_user_idTousers", fields: [recipientUserId], references: [id], onDelete: Cascade)
+  userIdToUsers          Users      @relation("chats_user_idTousers", fields: [userid], references: [id], onDelete: Cascade)
+  messages               Messages[]
+
+  @@map("chats")
 }
 
-model evaluations {
-  id                  Int       @id @default(autoincrement())
-  schedule_id         Int
-  comment_service     String?   @db.VarChar(255)
-  evaluation_service  String?   @db.VarChar(255)
-  comment_provider    String?   @db.VarChar(255)
-  evaluation_provider String?   @db.VarChar(255)
-  comment_user        String?   @db.VarChar(255)
-  evaluation_user     String?   @db.VarChar(255)
-  created_at          DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
-  schedules           schedules @relation(fields: [schedule_id], references: [id], onDelete: Cascade)
+model Evaluations {
+  id                 Int       @id @default(autoincrement())
+  scheduleId         Int       @unique @map("schedule_id")
+  commentService     String?   @map("comment_service") @db.VarChar(255)
+  evaluationService  String?   @map("evaluation_service") @db.VarChar(255)
+  commentProvider    String?   @map("comment_provider") @db.VarChar(255)
+  evaluationProvider String?   @map("evaluation_provider") @db.VarChar(255)
+  commentUser        String?   @map("comment_user") @db.VarChar(255)
+  evaluationUser     String?   @map("evaluation_user") @db.VarChar(255)
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+  schedules          Schedules @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@map("evaluations")
 }
 
-model messages {
+model Messages {
+  id             Int      @id @default(autoincrement())
+  userId         Int      @map("user_id")
+  chatId         Int      @map("chat_id")
+  messageType    String   @map("message_type") @db.VarChar(255)
+  messageContent String   @map("message_content") @db.VarChar(255)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  chats          Chats    @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  users          Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model PhotoSchedules {
+  id         Int       @id @default(autoincrement())
+  scheduleId Int       @map("schedule_id")
+  key        String    @db.VarChar(255)
+  type       String    @db.VarChar(255)
+  url        String    @db.VarChar(255)
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+  schedules  Schedules @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@map("photo_schedules")
+}
+
+model PhotoServices {
+  id        Int      @id @default(autoincrement())
+  serviceId Int      @map("service_id")
+  key       String   @db.VarChar(255)
+  type      String   @db.VarChar(255)
+  url       String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  services  Services @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@map("photo_services")
+}
+
+model Schedules {
+  id                         Int              @id @default(autoincrement())
+  userId                     Int              @map("user_id")
+  storeId                    Int              @map("store_id")
+  userServiceDate            DateTime         @map("user_service_date") @db.Timestamptz(6)
+  userStartedDate            DateTime?        @map("user_started_date") @db.Timestamptz(6)
+  userEndedDate              DateTime?        @map("user_ended_date") @db.Timestamptz(6)
+  userConfirmationDate       DateTime?        @map("user_confirmation_date") @db.Timestamptz(6)
+  userCancellationDate       DateTime?        @map("user_cancellation_date") @db.Timestamptz(6)
+  userCancellationReason     String?          @map("user_cancellation_reason") @db.VarChar(255)
+  providerStartedDate        DateTime?        @map("provider_started_date") @db.Timestamptz(6)
+  providerEndedDate          DateTime?        @map("provider_ended_date") @db.Timestamptz(6)
+  providerConfirmationDate   DateTime?        @map("provider_confirmation_date") @db.Timestamptz(6)
+  providerCancellationDate   DateTime?        @map("provider_cancellation_date") @db.Timestamptz(6)
+  providerCancellationReason String?          @map("provider_cancellation_reason") @db.VarChar(255)
+  status                     String           @default("pendingConfirmation") @db.VarChar(255)
+  createdAt                  DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                  DateTime         @default(now()) @map("updated_at") @db.Timestamptz(6)
+  users                      Users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  store                      Stores           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  evaluation                 Evaluations?
+  photos                     PhotoSchedules[]
+
+  @@map("schedules")
+}
+
+model Services {
+  id               Int             @id @default(autoincrement())
+  title            String          @db.VarChar(255)
+  subtitle         String?         @db.VarChar(255)
+  description      String          @db.VarChar(1020)
+  city             String          @db.VarChar(255)
+  state            String          @db.VarChar(255)
+  areaAvailability String[]        @map("area_availability") @db.VarChar(255)
+  routeMap         String?         @map("route_map") @db.VarChar(255)
+  price            Int
+  warning          String?         @db.VarChar(255)
+  categories       String[]        @db.VarChar(255)
+  hashtags         String[]        @db.VarChar(255)
+  distance         Int
+  stops            Int
+  duration         Int
+  coverPhoto       String          @map("coverPhoto") @db.VarChar(255)
+  location         String[]        @db.VarChar(255)
+  createdAt        DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime        @default(now()) @map("updated_at") @db.Timestamptz(6)
+  isActive         Boolean         @default(true)
+  photos           PhotoServices[]
+  likes            Likes[]
+  saves            Saves[]
+  stores           Stores[]
+
+  @@map("services")
+}
+
+model Followings {
   id              Int      @id @default(autoincrement())
-  user_id         Int
-  chat_id         Int
-  message_type    String   @db.VarChar(255)
-  message_content String   @db.VarChar(255)
-  created_at      DateTime @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime @default(now()) @db.Timestamptz(6)
-  chats           chats    @relation(fields: [chat_id], references: [id], onDelete: Cascade)
-  users           users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  userId          Int      @map("user_id")
+  userFollowingId Int      @map("user_following_id")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  followings      Users    @relation("social_followings_user_following_idTousers", fields: [userFollowingId], references: [id], onDelete: Cascade)
+  followers       Users    @relation("social_followings_user_idTousers", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("social_followings")
 }
 
-model photo_schedules {
-  id          Int       @id @default(autoincrement())
-  schedule_id Int
-  key         String    @db.VarChar(255)
-  type        String    @db.VarChar(255)
-  url         String    @db.VarChar(255)
-  created_at  DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime  @default(now()) @db.Timestamptz(6)
-  schedules   schedules @relation(fields: [schedule_id], references: [id], onDelete: Cascade)
+model Likes {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  serviceId Int      @map("service_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  services  Services @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("social_likes")
 }
 
-model photo_services {
-  id         Int      @id @default(autoincrement())
-  service_id Int
-  key        String   @db.VarChar(255)
-  type       String   @db.VarChar(255)
-  url        String   @db.VarChar(255)
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
-  services   services @relation(fields: [service_id], references: [id], onDelete: Cascade)
+model Saves {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  serviceId Int      @map("service_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  services  Services @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("social_saves")
 }
 
-model schedules {
-  id                           Int               @id @default(autoincrement())
-  user_id                      Int
-  user_service_id              Int
-  user_service_date            DateTime          @db.Timestamptz(6)
-  user_started_date            DateTime?         @db.Timestamptz(6)
-  user_ended_date              DateTime?         @db.Timestamptz(6)
-  user_confirmation_date       DateTime?         @db.Timestamptz(6)
-  user_cancellation_date       DateTime?         @db.Timestamptz(6)
-  user_cancellation_reason     String?           @db.VarChar(255)
-  provider_started_date        DateTime?         @db.Timestamptz(6)
-  provider_ended_date          DateTime?         @db.Timestamptz(6)
-  provider_confirmation_date   DateTime?         @db.Timestamptz(6)
-  provider_cancellation_date   DateTime?         @db.Timestamptz(6)
-  provider_cancellation_reason String?           @db.VarChar(255)
-  status                       String            @default("pendingConfirmation") @db.VarChar(255)
-  created_at                   DateTime          @default(now()) @db.Timestamptz(6)
-  updated_at                   DateTime          @default(now()) @db.Timestamptz(6)
-  users                        users             @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_services                user_services     @relation(fields: [user_service_id], references: [id], onDelete: Cascade)
-  evaluations                  evaluations[]
-  photo_schedules              photo_schedules[]
+model Users {
+  id                                   Int            @id @default(autoincrement())
+  picture                              String?        @db.VarChar(1020)
+  firstName                            String         @map("first_name") @db.VarChar(255)
+  lastName                             String?        @map("last_name") @db.VarChar(255)
+  email                                String         @unique @db.VarChar(255)
+  bio                                  String?        @db.VarChar(255)
+  checkGoogle                          Boolean        @default(false) @map("check_google")
+  checkFacebook                        Boolean        @default(false) @map("check_facebook")
+  phone                                String?        @db.VarChar(255)
+  roles                                String[]       @db.VarChar(255)
+  authId                               String         @map("auth_id") @db.VarChar(255)
+  createdAt                            DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                            DateTime       @default(now()) @map("updated_at") @db.Timestamptz(6)
+  isActive                             Boolean        @default(true)
+  chats_chats_recipient_user_idTousers Chats[]        @relation("chats_recipient_user_idTousers")
+  chats_chats_user_idTousers           Chats[]        @relation("chats_user_idTousers")
+  messages                             Messages[]
+  schedules                            Schedules[]
+  followings                           Followings[]   @relation("social_followings_user_following_idTousers")
+  followers                            Followings[]   @relation("social_followings_user_idTousers")
+  likes                                Likes[]
+  saves                                Saves[]
+  stores                               Stores[]
+  refreshToken                         RefreshTokens?
+
+  @@map("users")
 }
 
-model services {
-  id                     Int              @id @default(autoincrement())
-  title                  String           @db.VarChar(255)
-  subtitle               String?          @db.VarChar(255)
-  description            String           @db.VarChar(255)
-  city                   String           @db.VarChar(255)
-  state                  String           @db.VarChar(255)
-  area_availability_hash String           @db.VarChar(255)
-  route_map              String?          @db.VarChar(255)
-  price                  String           @db.VarChar(255)
-  warning                String?          @db.VarChar(255)
-  categories_hash        String           @db.VarChar(255)
-  hashtags_hash          String?          @db.VarChar(255)
-  distance               Int
-  stops                  Int
-  duration               String           @db.VarChar(255)
-  cover_photo            String           @db.VarChar(255)
-  location_hash          String           @db.VarChar(255)
-  created_at             DateTime         @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime         @default(now()) @db.Timestamptz(6)
-  photo_services         photo_services[]
-  social_likes           social_likes[]
-  social_saves           social_saves[]
-  user_services          user_services[]
-}
+model Stores {
+  id         Int         @id @default(autoincrement())
+  providerId Int         @map("provider_id")
+  serviceId  Int         @map("service_id")
+  createdAt  DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime    @default(now()) @map("updated_at") @db.Timestamptz(6)
+  provider   Users       @relation(fields: [providerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  service    Services    @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  schedules  Schedules[]
 
-model social_followings {
-  id                                               Int      @id @default(autoincrement())
-  user_id                                          Int
-  user_following_id                                Int
-  created_at                                       DateTime @default(now()) @db.Timestamptz(6)
-  updated_at                                       DateTime @default(now()) @db.Timestamptz(6)
-  users_social_followings_user_following_idTousers users    @relation("social_followings_user_following_idTousers", fields: [user_following_id], references: [id], onDelete: Cascade)
-  users_social_followings_user_idTousers           users    @relation("social_followings_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade)
-}
-
-model social_likes {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  service_id Int
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
-  services   services @relation(fields: [service_id], references: [id], onDelete: Cascade)
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-}
-
-model social_saves {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  service_id Int
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
-  services   services @relation(fields: [service_id], references: [id], onDelete: Cascade)
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-}
-
-model users {
-  id                                                           Int                 @id @default(autoincrement())
-  picture                                                      String?             @db.VarChar(1020)
-  first_name                                                   String              @db.VarChar(255)
-  last_name                                                    String?             @db.VarChar(255)
-  email                                                        String              @unique @db.VarChar(255)
-  bio                                                          String?             @db.VarChar(255)
-  check_google                                                 Boolean             @default(false)
-  check_facebook                                               Boolean             @default(false)
-  phone                                                        String?             @db.VarChar(255)
-  role_hash                                                    String              @default("[\"user\"]") @db.VarChar(255)
-  auth_id                                                      String              @db.VarChar(255)
-  created_at                                                   DateTime            @default(now()) @db.Timestamptz(6)
-  updated_at                                                   DateTime            @default(now()) @db.Timestamptz(6)
-  chats_chats_recipient_user_idTousers                         chats[]             @relation("chats_recipient_user_idTousers")
-  chats_chats_user_idTousers                                   chats[]             @relation("chats_user_idTousers")
-  messages                                                     messages[]
-  schedules                                                    schedules[]
-  social_followings_social_followings_user_following_idTousers social_followings[] @relation("social_followings_user_following_idTousers")
-  social_followings_social_followings_user_idTousers           social_followings[] @relation("social_followings_user_idTousers")
-  social_likes                                                 social_likes[]
-  social_saves                                                 social_saves[]
-  user_services                                                user_services[]
-  refresh_token                                                RefreshTokens?
-}
-
-model user_services {
-  id          Int         @id @default(autoincrement())
-  provider_id Int
-  service_id  Int
-  created_at  DateTime    @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime    @default(now()) @db.Timestamptz(6)
-  users       users       @relation(fields: [provider_id], references: [id], onDelete: Cascade)
-  services    services    @relation(fields: [service_id], references: [id], onDelete: Cascade)
-  schedules   schedules[]
+  // @@id([providerId, serviceId])
+  @@map("stores")
 }
 
 model RefreshTokens {
-  id          String    @id @default(uuid())
-  expiresIn   Int   
-  user        users     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
+  id        String @id @default(uuid())
+  expiresIn Int
+  user      Users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int    @unique
 
   @@map("refresh_tokens")
 }
