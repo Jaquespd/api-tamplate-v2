@@ -89,7 +89,7 @@ export default async (req: Request, res: Response) => {
       location,
       isActive,
     });
-    if (!service) return notFound(res);
+    if (!service) return notFound(res, { error: "Teste" });
     return success(res, {
       ...service,
     });

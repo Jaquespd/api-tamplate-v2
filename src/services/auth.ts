@@ -13,7 +13,7 @@ export default (roles) => async (req: Request, res: Response, next) => {
   let authHeader = req.headers.authorization;
   //FOR DEV
   if (
-    process.env.NODE_ENV === "development" &&
+    process.env.NODE_ENV !== "production" &&
     authHeader?.includes("Bearer dev")
   ) {
     // authHeader = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDUyMjUzMjMsImV4cCI6MTY0NTMxMTcyMywic3ViIjoiOSJ9.dzc6Fv2VnF8_CJxkn2_CnKyVgFTy8z7ywewDITi_nJQ`;
