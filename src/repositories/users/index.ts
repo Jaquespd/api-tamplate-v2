@@ -123,13 +123,7 @@ export class Users {
     }
   }
 
-  static async showOneUserWithDetails({
-    userId,
-    roles,
-  }: {
-    userId: number;
-    roles: Array<string>;
-  }) {
+  static async showOneUserWithDetails({ userId }: { userId: number }) {
     try {
       const user = await prisma.users.findFirst({
         where: {
@@ -151,7 +145,7 @@ export class Users {
       });
 
       //user
-      if (roles.some((r) => r === "user")) {
+      if (user.roles.some((r) => r === "user")) {
         const evaluations = [];
         for (const schedule of user.schedules) {
           if (schedule.evaluation) evaluations.push(schedule.evaluation);
@@ -174,7 +168,7 @@ export class Users {
       }
 
       //provider
-      if (roles.some((r) => r === "provider")) {
+      if (user.roles.some((r) => r === "provider")) {
         const providerUser = {
           ...user,
           services: user.stores.map((store) => store.service),
@@ -205,7 +199,7 @@ export class Users {
         };
       }
       console.log("ERROR, User IS ADMIN");
-      // if (roles.some((r) => r === "admin")) {}
+      // if (user.roles.some((r) => r === "admin")) {}
 
       return {};
     } catch (err) {

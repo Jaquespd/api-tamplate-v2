@@ -4,7 +4,7 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 # DEV
-.env
+# .env
 firebaseCertToken.pem
 
 # Node artifact files

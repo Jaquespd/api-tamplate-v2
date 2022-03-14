@@ -30,40 +30,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["Users"],
-        "summary": "Adicionar um novo usuario",
-        "description": "Adiciona um novo usuario",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Users"
-              }
-            }
-          }
-        },
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
+        "responses": {}
       },
       "put": {
         "tags": ["Users"],
@@ -77,7 +44,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
                     "type": "string"
                   },
                   "picture": {
@@ -96,19 +66,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
+        "responses": {}
       }
     },
     "/users/{id}": {
@@ -131,19 +89,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
+        "responses": {}
       },
       "delete": {
         "tags": ["Users"],
@@ -161,19 +107,7 @@
             "format": "int64"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        },
+        "responses": {},
         "security": [
           {
             "bearerAuth": []
@@ -207,11 +141,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
+        "responses": {}
       }
     },
     "/users/remove-service": {
@@ -240,11 +170,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
+        "responses": {}
       }
     },
     "/users/add-following": {
@@ -273,14 +199,10 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
+        "responses": {}
       }
     },
-    "/users/remove-following/user": {
+    "/users/remove-following/{id}": {
       "delete": {
         "tags": ["Social"],
         "summary": "Deixa de seguir um usuario",
@@ -302,11 +224,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
+        "responses": {}
       }
     },
     "/users/add-save": {
@@ -335,14 +253,10 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
+        "responses": {}
       }
     },
-    "/users/remove-save/service": {
+    "/users/remove-save/{id}": {
       "delete": {
         "tags": ["Social"],
         "summary": "Remove um serviço dos preferidos de um usuario",
@@ -397,14 +311,10 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
+        "responses": {}
       }
     },
-    "/users/remove-like/service": {
+    "/users/remove-like/{id}": {
       "delete": {
         "tags": ["Social"],
         "summary": "Remove um serviço dos likes de um usuario",
@@ -426,11 +336,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
+        "responses": {}
       }
     },
     "/services": {
@@ -443,19 +349,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
+        "responses": {}
       },
       "post": {
         "tags": ["Services"],
@@ -477,56 +371,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "tags": ["Services"],
-        "summary": "Edita um serviço.",
-        "description": "Edita um serviço.",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "picture": {
-                    "type": "string"
-                  },
-                  "phone": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
+        "responses": {}
       }
     },
     "/services/categories": {
@@ -539,19 +384,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
+        "responses": {}
       }
     },
     "/services/{id}": {
@@ -574,19 +407,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
+        "responses": {}
       },
       "delete": {
         "tags": ["Services"],
@@ -604,58 +425,12 @@
             "format": "int64"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        },
+        "responses": {},
         "security": [
           {
             "bearerAuth": []
           }
         ]
-      }
-    },
-    "/services/{id}/availability": {
-      "get": {
-        "summary": "Listar todos os prestadores disponiveis para aquele dia",
-        "description": "Listar todos os prestadores disponiveis para aquele dia.",
-        "tags": ["Services"],
-        "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "description": "ID do usuario",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/schedules": {
@@ -668,19 +443,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
+        "responses": {}
       },
       "post": {
         "tags": ["Schedules"],
@@ -692,7 +455,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateService"
+                "$ref": "#/components/schemas/CreateSchedule"
               }
             }
           }
@@ -702,126 +465,7 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "tags": ["Schedules"],
-        "summary": "Edita um agendamento.",
-        "description": "Edita um agendamento.",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "picture": {
-                    "type": "string"
-                  },
-                  "phone": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/schedules/{id}": {
-      "get": {
-        "summary": "Listar detalhes de um agendamento",
-        "description": "Essa rota é responsavel por listar os detalhes de um agendamento especifico.",
-        "tags": ["Schedules"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID do agendamento",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": ["Schedules"],
-        "summary": "Deleta um agendamento",
-        "description": "Deleta um agendamento",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID do agendamento",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/schedules/service/{id}": {
@@ -844,112 +488,37 @@
             "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
+        "responses": {}
+      }
+    },
+    "/schedules/provider/{id}": {
+      "get": {
+        "summary": "Listar todos os agendamentos de um provider",
+        "description": "Essa rota é responsavel por listar todos os agendamento de um provider especifico.",
         "tags": ["Schedules"],
-        "summary": "Deleta um agendamento",
-        "description": "Deleta um agendamento",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID do agendamento",
+            "description": "ID do provider",
             "required": true,
             "type": "integer",
             "format": "int64"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
-      }
-    },
-    "/notifications": {
-      "get": {
-        "summary": "Listar todas as notificações",
-        "description": "Essa rota é responsavel por listar todas as notificações",
-        "tags": ["Notifications"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          }
-        }
+        ],
+        "responses": {}
       }
     }
   },
   "components": {
     "schemas": {
-      "Users": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
-          },
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "picture": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          }
-        }
-      },
       "CreateService": {
         "type": "object",
-        "required": [
-          "title",
-          "description",
-          "city",
-          "state",
-          "price",
-          "categories",
-          "distance",
-          "stop",
-          "location"
-        ],
         "properties": {
           "title": {
             "type": "string"
@@ -976,7 +545,7 @@
             "type": "string"
           },
           "price": {
-            "type": "string"
+            "type": "integer"
           },
           "warning": {
             "type": "string"
@@ -999,16 +568,34 @@
           "stops": {
             "type": "integer"
           },
+          "duration": {
+            "type": "integer"
+          },
+          "coverPhoto": {
+            "type": "string"
+          },
           "location": {
-            "type": "object",
-            "properties": {
-              "latitude": {
-                "type": "string"
-              },
-              "longitude": {
-                "type": "string"
-              }
+            "type": "array",
+            "items": {
+              "type": "string"
             }
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateSchedule": {
+        "type": "object",
+        "properties": {
+          "providerId": {
+            "type": "integer"
+          },
+          "serviceId": {
+            "type": "integer"
+          },
+          "userServiceDate": {
+            "type": "string"
           }
         }
       }

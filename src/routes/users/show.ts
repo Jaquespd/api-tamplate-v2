@@ -21,9 +21,9 @@ export default async (req: Request, res: Response) => {
   try {
     const user = await Users.showOneUserWithDetails({
       userId: Number(userId),
-      roles,
     });
     if (!user) return notFound(res);
+    // Filter response for user roles.
     return success(res, user);
   } catch (err) {
     console.log("***Error:", err.message);

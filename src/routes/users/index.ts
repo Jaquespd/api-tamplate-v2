@@ -34,10 +34,10 @@ router.post("/add-following", asyncMiddleware(auth(["user", "provider"])));
 router.post("/add-following", asyncMiddleware(addFollowing));
 
 router.delete(
-  "/remove-following/user/:id",
+  "/remove-following/:id",
   asyncMiddleware(auth(["user", "provider"]))
 );
-router.delete("/remove-following/user/:id", asyncMiddleware(removeFollowing));
+router.delete("/remove-following/:id", asyncMiddleware(removeFollowing));
 
 router.get("/", asyncMiddleware(auth(["admin"])));
 router.get("/", asyncMiddleware(list));
@@ -52,19 +52,13 @@ router.delete("/:id", asyncMiddleware(remove));
 router.post("/add-save", asyncMiddleware(auth(["user", "provider"])));
 router.post("/add-save", asyncMiddleware(addSave));
 
-router.delete(
-  "/remove-save/service/:id",
-  asyncMiddleware(auth(["user", "provider"]))
-);
-router.delete("/remove-save/service/:id", asyncMiddleware(removeSave));
+router.delete("/remove-save/:id", asyncMiddleware(auth(["user", "provider"])));
+router.delete("/remove-save/:id", asyncMiddleware(removeSave));
 
 router.post("/add-like", asyncMiddleware(auth(["user", "provider"])));
 router.post("/add-like", asyncMiddleware(addLike));
 
-router.delete(
-  "/remove-like/service/:id",
-  asyncMiddleware(auth(["user", "provider"]))
-);
-router.delete("/remove-like/service/:id", asyncMiddleware(removeLike));
+router.delete("/remove-like/:id", asyncMiddleware(auth(["user", "provider"])));
+router.delete("/remove-like/:id", asyncMiddleware(removeLike));
 
 export default router;
